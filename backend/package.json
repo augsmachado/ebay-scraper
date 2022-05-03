@@ -1,15 +1,22 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "license": "MIT",
-  "devDependencies": {
-    "nodemon": "^2.0.15"
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "Augusto Machado",
+  "license": "CC0 1.0 Universal",
   "dependencies": {
-    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "firebase": "^9.6.11"
+    "express": "^4.18.1",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
   }
 }
