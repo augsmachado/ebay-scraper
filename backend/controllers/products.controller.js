@@ -109,7 +109,6 @@ export default class ProductsController {
 				const html = response.data;
 				const $ = cheerio.load(html);
 				const product = $("div#CenterPanelInternal");
-				const product_details = $("div#BottomPanelDF");
 
 				let product_info = [];
 
