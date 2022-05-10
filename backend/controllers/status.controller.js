@@ -1,7 +1,5 @@
-import pkg from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-
-const { v4: uuidv4 } = pkg;
 export default class StatusController {
 	static async getStatusApi(req, res) {
 		try {

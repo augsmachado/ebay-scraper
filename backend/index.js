@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
+app.use("/", status);
 app.use("/status", status);
 app.use("/products", products);
 app.use("/deals", deals);
