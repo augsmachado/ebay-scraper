@@ -1,14 +1,105 @@
 import axios from "axios";
 import cheerio from "cheerio";
+import dotenv from "dotenv";
 
+// Define .env config
+dotenv.config();
+const SERVER = process.env.SERVER_BASE_URL;
 const MINIMUM_OF_LETTERS = 2;
+
+// Define ebay_subdomains
+const subdomains = [
+	{
+		ebay_domain: "http://www.ebay.com",
+		country: "global",
+	},
+	{
+		ebay_domain: "http://www.ebay.com.au",
+		country: "australia",
+	},
+	{
+		ebay_domain: "http://www.ebay.at",
+		country: "austria",
+	},
+	{
+		ebay_domain: "http://www.ebay.ca",
+		country: "canada",
+	},
+	{
+		ebay_domain: "http://www.ebay.fr",
+		country: "france",
+	},
+	{
+		ebay_domain: "http://www.ebay.de",
+		country: "germany",
+	},
+	{
+		ebay_domain: "http://www.ebay.com.hk",
+		country: "hong kong",
+	},
+	{
+		ebay_domain: "http://www.ebay.ie",
+		country: "ireland",
+	},
+	{
+		ebay_domain: "http://www.ebay.it",
+		country: "italy",
+	},
+	{
+		ebay_domain: "http://www.ebay.com.my",
+		country: "malaysia",
+	},
+	{
+		ebay_domain: "http://www.ebay.nl",
+		country: "netherlands",
+	},
+	{
+		ebay_domain: "http://www.ebay.ph",
+		country: "philippines",
+	},
+	{
+		ebay_domain: "http://www.ebay.pl",
+		country: "poland",
+	},
+	{
+		ebay_domain: "http://www.ebay.com.sg",
+		country: "singapore",
+	},
+	{
+		ebay_domain: "http://www.ebay.es",
+		country: "spain",
+	},
+	{
+		ebay_domain: "http://www.ebay.ch",
+		country: "switzerland",
+	},
+	{
+		ebay_domain: "http://www.ebay.co.uk",
+		country: "united kingdom",
+	},
+];
 
 export default class ProductsController {
 	static async getProducts(req, res) {
 		const page_number = 1 || req.query.page;
 		const product_name = req.query.product_name;
+		const country = req.query.country || "global";
 
-		const link = `https://www.ebay.com/sch/i.html?_from=R40&_nkw=${product_name}&_sacat=0&_dcat=111422&_pgn=${page_number}&rt=nc`;
+		let domain = SERVER;
+		try {
+			for (let i = 0; i < subdomains.length; i++) {
+				if (subdomains[i].country === country.toLowerCase()) {
+					domain = subdomains[i].ebay_domain;
+				}
+			}
+		} catch (err) {
+			res.status(404).json({
+				error: "Domain not found",
+				details: `${err}`,
+			});
+		}
+
+		const link = `${domain}/sch/i.html?_fromR40&_nkw=${product_name}&_sacat=0&_dcat=111422&_pgn=${page_number}&rt=nc`;
 		if (product_name.length >= MINIMUM_OF_LETTERS) {
 			axios(link)
 				.then((response) => {
@@ -73,14 +164,14 @@ export default class ProductsController {
 						ebay_products.push({
 							product_id: id,
 							name: product_name,
-							product_state: product_state,
+							condition: product_state,
 							price: price,
 							discount: discount,
 							product_location: product_location,
 							logistics_cost: logistics_cost,
 							description: description,
 							link: link,
-							image: image,
+							thumbnail: image,
 						});
 					});
 					res.json(ebay_products);
@@ -101,8 +192,23 @@ export default class ProductsController {
 
 	static async getProductById(req, res) {
 		const id = req.params.id;
+		const country = req.query.country || "global";
 
-		const link = `https://www.ebay.com/itm/${id}`;
+		let domain = SERVER;
+		try {
+			for (let i = 0; i < subdomains.length; i++) {
+				if (subdomains[i].country === country.toLowerCase()) {
+					domain = subdomains[i].ebay_domain;
+				}
+			}
+		} catch (err) {
+			res.status(404).json({
+				error: "Domain not found",
+				details: `${err}`,
+			});
+		}
+
+		const link = `${domain}/itm/${id}`;
 		axios
 			.get(link)
 			.then((response) => {
