@@ -3,7 +3,6 @@
 # v1.2.0 (new release)
 
 **_New Features_**
-
 -   add cache for response
 -   new endpoints to get tech, home and fashion deals
 -   new payload response: /products and /status
@@ -107,6 +106,13 @@ If you want to access a subdomain, provide the **country** parameter with one of
     -   response
         -   **remove keys**: ebay_domain and connection
 
+**| status |**
+
+-   _GET/status/server_
+    -   without params
+    -   response
+        -   **remove keys**: ebay_domain and connection
+        
 ```
 {
     "msg": "Current Server status",
@@ -119,6 +125,7 @@ If you want to access a subdomain, provide the **country** parameter with one of
     "hash": "29570514-8d6d-4416-9e42-e05203683894"
 }
 ```
+
 
 **| products |**
 
@@ -156,7 +163,6 @@ If you want to access a subdomain, provide the **country** parameter with one of
         -   country: **optional**
     -   response
         -   **new keys**: product_name, shipping, more_infos.seller, more_infos.feefback_profile, more_infos.store
-
 ```
 {
     "product_id": "133051277200",
