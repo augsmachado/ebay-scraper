@@ -111,12 +111,12 @@ export default class ProductsController {
 
 					products.each((index, element) => {
 						const product_name = $(element)
-							.find("h3.s-item__title")
+							.find("div.s-item__title")
 							.text()
 							.trim();
 
-						const product_state = $(element)
-							.find("span.SECONDARY_INFO")
+						const condition = $(element)
+							.find("div.s-item__subtitle > span.SECONDARY_INFO")
 							.text()
 							.trim();
 
@@ -126,12 +126,22 @@ export default class ProductsController {
 							.trim();
 
 						const discount = $(element)
-							.find("span.s-item__discount.s-item__discount")
+							.find(
+								"span.s-item__discount.s-item__discount > span.BOLD"
+							)
 							.text()
 							.trim();
 
-						const product_location = $(element)
+						const location_global = $(element)
 							.find("span.s-item__location.s-item__itemLocation")
+							.text()
+							.trim();
+
+						// Use this when the domain selected is different then global
+						const location_local = $(element)
+							.find(
+								"span.s-item__location.s-item__itemLocation > span.ITALIC"
+							)
 							.text()
 							.trim();
 
@@ -145,16 +155,26 @@ export default class ProductsController {
 							.text()
 							.trim();
 
+						const sales_potential = $(element)
+							.find(
+								"div.s-item__detail.s-item__detail--primary > span.s-item__hotness.s-item__itemHotness > span.BOLD"
+							)
+							.text()
+							.trim();
+
 						const link = $(element)
 							.find("div.s-item__info.clearfix > a")
 							.attr("href");
 
-						const image = $(element)
+						const thumbnail = $(element)
 							.find("div.s-item__image-wrapper > img")
 							.attr("src");
 
-						// TODO: simplify this extraction
-						// Extract the product_id of the product link
+						const reviews = $(element)
+							.find("div.s-item__reviews > a")
+							.attr("href");
+
+						// TODO: simplify this extraction of the product_id of the product link
 						const sub = link.split("/");
 						const id = sub[sub.indexOf("itm") + 1].substring(
 							0,
@@ -164,21 +184,39 @@ export default class ProductsController {
 						ebay_products.push({
 							product_id: id,
 							name: product_name,
-							condition: product_state,
+							condition: condition,
 							price: price,
-							discount: discount,
-							product_location: product_location,
+							discount:
+								discount.length > 0 ? discount : "uninformed",
+							product_location:
+								location_global.length > 0
+									? location_global
+									: location_local,
 							logistics_cost: logistics_cost,
 							description: description,
+							sales_potential:
+								sales_potential.length > 0
+									? sales_potential
+									: "uninformed",
 							link: link,
-							thumbnail: image,
+							reviews: reviews,
+							thumbnail: thumbnail,
 						});
 					});
+
+					// Remove products without essential attributes
+					for (var i = 0; i < ebay_products.length; i++) {
+						if (ebay_products[i].product_location === "") {
+							ebay_products.splice(i, 1);
+							i--;
+						}
+					}
+
 					res.json(ebay_products);
 				})
 				.catch((err) => {
 					res.json({
-						error: `Unable to search ${product} on server`,
+						error: `Unable to search ${product_name} on server`,
 						details: `${err}`,
 					});
 				});
@@ -214,13 +252,32 @@ export default class ProductsController {
 			.then((response) => {
 				const html = response.data;
 				const $ = cheerio.load(html);
-				const product = $("div#CenterPanelInternal");
+				const product = $("div#Body");
 
 				let product_info = [];
 
 				product.each((index, element) => {
-					const description = $(element)
-						.find("h1.x-item-title__mainTitle > span")
+					const product_name = $(element)
+						.find(
+							"div.vim.x-item-title > h1.x-item-title__mainTitle > span.ux-textspans.ux-textspans--BOLD"
+						)
+						.text()
+						.trim();
+
+					const quantity_available = $(element)
+						.find("span#qtySubTxt")
+						.text()
+						.trim();
+
+					const price = $(element).find("span#prcIsum").text().trim();
+
+					const discounted_price = $(element)
+						.find("span#mm-saleDscPrc")
+						.text()
+						.trim();
+
+					const logistics_cost = $(element)
+						.find("div#prcIsumConv")
 						.text()
 						.trim();
 
@@ -229,19 +286,23 @@ export default class ProductsController {
 						.text()
 						.trim();
 
-					const quantity_available = $(element)
-						.find("span#qtySubTxt")
-						.text()
-						.trim();
-					const price = $(element).find("span#prcIsum").text().trim();
-
-					const logistics_cost = $(element)
-						.find("span#convbidPrice")
-						.text()
-						.trim();
-
 					const sold = $(element)
 						.find("div.w2b.w2bsls > div")
+						.text()
+						.trim();
+
+					const delivery_global = $(element)
+						.find(
+							"span.ux-textspans.ux-textspans--BOLD.ux-textspans--NEGATIVE"
+						)
+						.text()
+						.trim();
+
+					// Use this when the domain selected is different then global
+					const delivery_local = $(element)
+						.find(
+							"td.ux-table-section__cell > span.ux-textspans > span.ux-textspans.ux-textspans--BOLD"
+						)
 						.text()
 						.trim();
 
@@ -250,35 +311,71 @@ export default class ProductsController {
 						.text()
 						.trim();
 
-					const delivery = $(element)
-						.find(
-							"span.ux-textspans.ux-textspans--BOLD.ux-textspans--NEGATIVE"
-						)
+					const description = $(element)
+						.find("h1.x-item-title__mainTitle > span")
 						.text()
 						.trim();
 
-					const more_infos = $(element)
-						.find("div.ux-labels-values__values.col-9")
+					const seller = $(element)
+						.find(
+							"div.d-stores-info-categories__container__info__section__title"
+						)
+						.attr("title");
+
+					const feedback_profile = $(element)
+						.find("div.ux-seller-section__item--seller > a")
+						.attr("href");
+
+					const store = $(element)
+						.find(
+							"div.d-stores-info-categories__container__action > a"
+						)
+						.attr("href");
+
+					const shipping = $(element)
+						.find(
+							"div.ux-labels-values__values-content > div > span.ux-textspans.ux-textspans--SECONDARY"
+						)
 						.text()
 						.trim();
 
 					product_info.push({
 						product_id: id,
+						product_name: product_name
+							.replace(/_/g, " ")
+							.replace(/-/g, " "),
 						link: link,
 						quantity_available: quantity_available,
-						price: price,
+						price:
+							price.length > 0
+								? price.replace(/[\r\n\t]/gm, "")
+								: discounted_price.replace(/[\r\n\t]/gm, ""),
 						logistics_cost: logistics_cost,
 						last_24_hours: last_24_hours,
 						sold: sold.substring(0, sold.indexOf(" ")),
-						delivery: delivery,
+						delivery:
+							delivery_global.length > 0
+								? delivery_global
+								: delivery_local.length > 0
+								? delivery_local
+								: "uninformed",
 						return_period: return_period.substring(
 							0,
 							return_period.indexOf(" ")
 						),
-						description: description,
-						more_infos: more_infos,
+						description: description
+							.replace(/_/g, " ")
+							.replace(/-/g, " "),
+
+						shipping: shipping,
+						more_infos: {
+							seller: seller,
+							feedback_profile: feedback_profile,
+							store: store,
+						},
 					});
 				});
+
 				res.json(product_info[0]);
 			})
 			.catch((err) => {

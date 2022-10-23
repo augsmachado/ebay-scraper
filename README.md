@@ -3,10 +3,10 @@
 # v1.2.0 (new release)
 
 **_New Features_**
-- add cache for response
-- new endpoints to get tech, home and fashion deals
-- new payload response: /products and /status
-- if payload's value is not informed by seller, then it will be filled like "uninformed"
+-   add cache for response
+-   new endpoints to get tech, home and fashion deals
+-   new payload response: /products and /status
+-   if payload's value is not informed by seller, then it will be filled like "uninformed"
 
 **_Support for eBay subdomains_**
 This feature is supported by the following endpoints:
@@ -105,6 +105,13 @@ If you want to access a subdomain, provide the **country** parameter with one of
     -   without params
     -   response
         -   **remove keys**: ebay_domain and connection
+
+**| status |**
+
+-   _GET/status/server_
+    -   without params
+    -   response
+        -   **remove keys**: ebay_domain and connection
         
 ```
 {
@@ -130,7 +137,7 @@ If you want to access a subdomain, provide the **country** parameter with one of
         -   country: **optional**
     -   response
         -   **new keys**: sales_potential and reviews
-        
+
 ```
 [
     {
@@ -148,8 +155,7 @@ If you want to access a subdomain, provide the **country** parameter with one of
         "thumbnail": "https://i.ebayimg.com/thumbs/images/g/aeIAAOSwSxNjVHUG/s-l225.jpg"
     }
  ]
-```  
- 
+```
 
 -   GET/products/:id
     -   params
