@@ -18,7 +18,6 @@ const verifyCache = (req, res, next) => {
 	try {
 		const { id } = req.params;
 		if (cache.has(id)) {
-			console.log(`cache`);
 			return res.status(200).json(cache.get(id));
 		}
 		return next();
@@ -29,10 +28,10 @@ const verifyCache = (req, res, next) => {
 
 app.use(express.json());
 
-app.use("/", verifyCache, status);
-app.use("/status", verifyCache, status);
+app.use("/", status);
+app.use("/status", status);
 app.use("/products", verifyCache, products);
-app.use("/deals", verifyCache, deals);
+app.use("/deals", deals);
 
 app.use("*", (req, res) => {
 	res.status(400).json({ error: "Not route found" });

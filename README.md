@@ -1,13 +1,19 @@
 # potential_enigma
 
-# v1.1.0 (new release)
+# v1.2.0 (new release)
 
-**NEW FEATURE: _Support for eBay subdomains_**
+**_New Features_**
+
+-   add cache for response
+-   new endpoints to get tech, home and fashion deals
+-   new payload response: /products and /status
+-   if payload's value is not informed by seller, then it will be filled like "uninformed"
+
+**_Support for eBay subdomains_**
 This feature is supported by the following endpoints:
 
 -   **GET**/products
 -   **GET**/products/:id
--   **GET**/deals
 
 If you want to access a subdomain, provide the **country** parameter with one of the supported countries below.
 
@@ -28,151 +34,155 @@ If you want to access a subdomain, provide the **country** parameter with one of
 -   **switzerland**: http://www.ebay.ch
 -   **united kingdom**: http://www.ebay.co.uk
 
-### endpoints
-
-**| status |**
-
--   _GET/_ and _GET/status/api_
-
-    -   response: _>> no changes_
-
--   GET/status/server
-    -   params
-        -   country: **optional**
-    -   response
-
-```
-{
-    "msg": "Current Server status",
-    "name": "ebay-scraper-server",
-    "environment": "production",
-    "version": "1.1.0",
-    "uptime": 1654371455712,
-    "hash": "07fd411e-dfae-4b4e-81cb-2ec37ff2d31b",
-    "ebay_domain": "http://www.ebay.com.au",
-    "status_text": "OK",
-    "status": "200"
-}
-```
-
-**| products |**
-
--   GET/products
-
-    -   params
-        -   page_number: **mandatory**
-        -   product: **mandatory**
-        -   country: **optional**
-    -   response: _>> no changes_
-
--   GET/products/:id
-    -   params
-        -   id: **mandatory**
-        -   country: **optional**
-    -   response: _>> no changes_
+### New endpoints
 
 **| deals |**
 
--   GET/deals
-    -   params
-        -   country: **optional**
-    -   response: _>> no changes_
-
-# v1.0.0 (old)
-
-### endpoints
-
-**| status |**
-
--   _GET/_ and _GET/status/api_
+-   _GET/deals/tech_
+    -   without params
     -   response
 
 ```
-{
-    "msg": "Current API status",
-    "name": "ebay-scraper-api",
-    "environment": "production",
-    "version": "1.0.0",
-    "uptime": 1654367184835,
-    "hash": "568073a1-9d24-45f9-96cb-3114ae7fedd5"
-}
-```
-
--   GET/status/server
-    -   response
-
-```
-{
-    "msg": "Current Server status",
-    "name": "ebay-scraper-server",
-    "environment": "production",
-    "version": "1.0.0",
-    "uptime": 1654368439072,
-    "hash": "7ae292eb-30bf-474d-b921-8747da6705de",
-    "status_text": "OK",
-    "status": "200"
-}
-```
-
-**| products |**
-
--   GET/products
-    -   params
-        -   page_number: **mandatory**
-        -   product: **mandatory**
-    -   response
-
-```
-{
-    "product_id": "390525081441",
-    "name": "NEW WOMENS LADIES CONCEALED PLATFORM STILETTO HIGH HEELS COURT SHOES SIZE 3-8",
-    "condition": "Brandneu",
-    "price": "EUR 23,35",
-    "discount": "",
-    "product_location": "aus Großbritannien",
-    "logistics_cost": "+EUR 16,34 Versand",
-    "description": "Brandneu: Gewerblich",
-    "link": "https://www.ebay.at/itm/390525081441?hash=item5aed1bd761:g:36AAAOSwal5YGf~W",
-    "thumbnail": "https://i.ebayimg.com/thumbs/images/g/36AAAOSwal5YGf~W/s-l225.jpg"
+[
+    {
+        "product_name": "2020 Apple iPad 8th Geração 32/128GB Wifi 10.2\" Modelo mais recente",
+        "price": "1 634,49",
+        "original_price": "uninformed",
+        "currency": "BRL",
+        "discount": 0,
+        "product_condition": "uninformed",
+        "sale_status": "Quase esgotado",
+        "link": "https://www.ebay.com/itm/383791923777?_trkparms=5373%3A5000014449%7C5374%3ATech%7C5079%3A5000014449",
+        "image": "https://i.ebayimg.com/images/g/5R0AAOSwMDZhTrQk/s-l225.jpg"
     }
+]
+```
+
+-   _GET/deals/fashion_
+    -   without params
+    -   response
+
+```
+[
+    {
+        "product_name": "Nike Masculino com Capuz Manga Longa Atlético Velo Academia Athletic Moletom Com Capuz",
+        "price": "232,88",
+        "original_price": "739,23",
+        "currency": "BRL",
+        "discount": "-68.61%",
+        "product_condition": "uninformed",
+        "sale_status": "Quase esgotado",
+        "link": "https://www.ebay.com/itm/203993185057?_trkparms=5373%3A5000014492%7C5374%3AFashion%7C5079%3A5000014492",
+        "image": "https://i.ebayimg.com/images/g/RHMAAOSwIG9irCOw/s-l225.jpg"
+    }
+]
+```
+
+-   _GET/deals/home_
+    -   without params
+    -   response
+
+```
+[
+    {
+        "product_name": "Garrafa Térmica Aço Inoxidável 16 Oz Rei isolada de aço inoxidável Caneca de viagem com Alça",
+        "price": "126,56R",
+        "original_price": "105,55",
+        "currency": "BRL",
+        "discount": "20.00%",
+        "product_condition": "uninformed",
+        "sale_status": "Quase esgotado",
+        "link": "https://www.ebay.com/itm/382324124062?_trkparms=5373%3A5000014556%7C5374%3AHome%7C5079%3A5000014557",
+        "image": "https://ir.ebaystatic.com/pictures/aw/pics/s_1x2.gif"
+    }
+]
+```
+
+### New payload response
+
+**| status |**
+
+-   _GET/status/server_
+    -   without params
+    -   response
+        -   **remove keys**: ebay_domain and connection
+
+```
+{
+    "msg": "Current Server status",
+    "name": "ebay-scraper-server",
+    "environment": "production",
+    "version": "1.2.0",
+    "status": "200",
+    "status_text": "OK",
+    "uptime": 1666490345511,
+    "hash": "29570514-8d6d-4416-9e42-e05203683894"
+}
+```
+
+**| products |**
+
+-   GET/products
+
+    -   params
+        -   page_number: **mandatory**
+        -   product: **mandatory**
+        -   country: **optional**
+    -   response
+        -   **new keys**: sales_potential and reviews
+
+```
+[
+    {
+        "product_id": "115576217898",
+        "name": "New ListingNEW HP 564 3-Pack CYAN/YELLOW/MAGENTA Ink Cartridges + Photo Paper J2X80AN QTY 2",
+        "condition": "Brand New",
+        "price": "C $26.11",
+        "discount": "uninformed",
+        "product_location": "from United States",
+        "logistics_cost": "+C $37.56 shipping estimate",
+        "description": "Brand New",
+        "sales_potential": "uninformed",
+        "link": "https://www.ebay.ca/itm/115576217898?epid=6019370045&hash=item1ae8e1212a:g:aeIAAOSwSxNjVHUG&amdata=enc%3AAQAHAAAA4KBFkkcuHmN7YPLlgNa7crSHDtCOIqG3j0cLesS71a%2F3s%2FbH%2B6I7ZGPkfiwcKLtDx40N7u5INZuvWc8xH2sy0IfVpJVWt4zdAN%2BSS2VI5wNyP1bCbaa%2FFYxlnNRttXGirPl%2B5EdQ8f5T1PFdRZ7FAau2HHx6RCSsAG2tbbO12fyln34LlmEVOcJzVM7nywncTapPxy5uRxZimVc6hSzamWLyp3FM9xl0QheRtHdyfWk8oZxsMFVCsLINdHzDMBEg8EqVMCdSEFRI56q1SER9Fop7swpobxpUx7s1pYVFy9hZ%7Ctkp%3ABk9SR5aly7CAYQ",
+        "reviews": "https://www.ebay.ca/p/6019370045?iid=115576217898&rt=nc#UserReviews",
+        "thumbnail": "https://i.ebayimg.com/thumbs/images/g/aeIAAOSwSxNjVHUG/s-l225.jpg"
+    }
+ ]
 ```
 
 -   GET/products/:id
     -   params
         -   id: **mandatory**
+        -   country: **optional**
     -   response
+        -   **new keys**: product_name, shipping, more_infos.seller, more_infos.feefback_profile, more_infos.store
 
 ```
 {
-    "product_id": "304514634779",
-    "link": "http://www.ebay.com/itm/304514634779",
-    "quantity_available": "2 disponíveis",
-    "price": "GBP 220,00",
-    "logistics_cost": "",
-    "last_24_hours": "1 observado nas últimas 24 horas",
-    "sold": "30",
-    "delivery": "",
-    "return_period": "",
-    "description": "🔥 Nike Air Max Plus Tn sintonizado Tênis Masculino Preto/Azul DV3493-001 Reino Unido 8 🔥-",
-    "more_infos": "GBP 44.35 (aproximadamente R$ 265.92) Entrega urgente para Brasil via ....."
+    "product_id": "133051277200",
+    "product_name": "$8.25/Mo Red Pocket Prepaid Wireless Phone Plan+Kit:1000 Talk Unlimited Text 1GB",
+    "link": "http://www.ebay.com.au/itm/133051277200",
+    "quantity_available": "Limited quantity available",
+    "price": "US $99.00",
+    "logistics_cost": "Approximately AU $156.78(including postage)",
+    "last_24_hours": "23 sold in last 24 hours",
+    "sold": "37,267",
+    "delivery": "uninformed",
+    "return_period": "Returns",
+    "description": "$8.25/Mo Red Pocket Prepaid Wireless Phone Plan+Kit:1000 Talk Unlimited Text 1GB",
+    "shipping": "(approx. AU $32.46)International delivery of items may be subject to customs processing and additional charges.Located in: Yonkers, New York, United StatesPlease allow additional time if international delivery is subject to customs processing.Yonkers, New York, United StatesWorldwideBarbados, French Guiana, French Polynesia, Guadeloupe, Libya, Martinique, New Caledonia, Reunion, Russian Federation, Ukraine, Venezuela",
+    "more_infos": {
+        "seller": "Red Pocket Store",
+        "feedback_profile": "https://www.ebay.com.au/usr/redpocketstore?_trksid=p2047675.m3561.l2559",
+        "store": "https://www.ebay.com.au/str/redpocketstore?_trksid=p2047675.m145687.l149086"
+    }
 }
 ```
 
-**| deals |**
+### Endpoints without changes
 
--   GET/deals
-    -   response
+**| status |**
 
-```
-{
-    "product_name: "Lenovo Legion 5 Pro 16 165Hz qHD in-plane de comutação Nvidia G-SYNC 500 nits laptop para jogos AMD R",
-    "price": " 6 650,87",
-    "original_price": " 8 187,84",
-    "currency": "BRL",
-    "discount": "-25.00%",
-    "product_condition": null,
-    "sale_status": null,
-    "link": "https://www.ebay.com/itm/125058259597?_trkparms=5373%3A0%7C5374%3AFeatured",
-    "image": "https://i.ebayimg.com/images/g/pxcAAOSwis1hwW4V/s-l225.jpg"
-}
-```
+-   _GET/_ and _GET/status/api_
+
+    -   response: _>> no changes_
