@@ -31,7 +31,7 @@ app.use(express.json());
 app.use("/", status);
 app.use("/status", status);
 app.use("/products", verifyCache, products);
-app.use("/deals", deals);
+app.use("/deals", verifyCache, deals);
 
 app.use("*", (req, res) => {
 	res.status(400).json({ error: "Not route found" });
