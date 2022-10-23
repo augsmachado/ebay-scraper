@@ -3,6 +3,7 @@
 # v1.2.0 (new release)
 
 **_New Features_**
+
 -   add cache for response
 -   new endpoints to get tech, home and fashion deals
 -   new payload response: /products and /status
@@ -112,7 +113,7 @@ If you want to access a subdomain, provide the **country** parameter with one of
     -   without params
     -   response
         -   **remove keys**: ebay_domain and connection
-        
+
 ```
 {
     "msg": "Current Server status",
@@ -125,7 +126,6 @@ If you want to access a subdomain, provide the **country** parameter with one of
     "hash": "29570514-8d6d-4416-9e42-e05203683894"
 }
 ```
-
 
 **| products |**
 
@@ -162,7 +162,8 @@ If you want to access a subdomain, provide the **country** parameter with one of
         -   id: **mandatory**
         -   country: **optional**
     -   response
-        -   **new keys**: product_name, shipping, more_infos.seller, more_infos.feefback_profile, more_infos.store
+        -   **new keys**: product_name, shipping, seller, feefback_profile, store
+
 ```
 {
     "product_id": "133051277200",
@@ -177,11 +178,9 @@ If you want to access a subdomain, provide the **country** parameter with one of
     "return_period": "Returns",
     "description": "$8.25/Mo Red Pocket Prepaid Wireless Phone Plan+Kit:1000 Talk Unlimited Text 1GB",
     "shipping": "(approx. AU $32.46)International delivery of items may be subject to customs processing and additional charges.Located in: Yonkers, New York, United StatesPlease allow additional time if international delivery is subject to customs processing.Yonkers, New York, United StatesWorldwideBarbados, French Guiana, French Polynesia, Guadeloupe, Libya, Martinique, New Caledonia, Reunion, Russian Federation, Ukraine, Venezuela",
-    "more_infos": {
-        "seller": "Red Pocket Store",
-        "feedback_profile": "https://www.ebay.com.au/usr/redpocketstore?_trksid=p2047675.m3561.l2559",
-        "store": "https://www.ebay.com.au/str/redpocketstore?_trksid=p2047675.m145687.l149086"
-    }
+    "seller": "Red Pocket Store",
+    "feedback_profile": "https://www.ebay.com.au/usr/redpocketstore?_trksid=p2047675.m3561.l2559",
+    "store": "https://www.ebay.com.au/str/redpocketstore?_trksid=p2047675.m145687.l149086"
 }
 ```
 

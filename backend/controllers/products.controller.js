@@ -368,11 +368,9 @@ export default class ProductsController {
 							.replace(/-/g, " "),
 
 						shipping: shipping,
-						more_infos: {
-							seller: seller,
-							feedback_profile: feedback_profile,
-							store: store,
-						},
+						seller: seller,
+						feedback_profile: feedback_profile,
+						store: store,
 					});
 				});
 

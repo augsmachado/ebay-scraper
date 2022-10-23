@@ -79,7 +79,7 @@ export default class DealsController {
 						product_condition:
 							product_condition.length > 0
 								? product_condition
-								: "uninformed",
+								: null,
 						sale_status:
 							sale_status.length > 0 ? sale_status : "uninformed",
 						link: link,
@@ -173,7 +173,7 @@ export default class DealsController {
 						product_condition:
 							product_condition.length > 0
 								? product_condition
-								: "uninformed",
+								: null,
 						sale_status:
 							sale_status.length > 0 ? sale_status : "uninformed",
 						link: link,
@@ -267,7 +267,7 @@ export default class DealsController {
 						product_condition:
 							product_condition.length > 0
 								? product_condition
-								: "uninformed",
+								: null,
 						sale_status:
 							sale_status.length > 0 ? sale_status : "uninformed",
 						link: link,
@@ -361,7 +361,7 @@ export default class DealsController {
 						product_condition:
 							product_condition.length > 0
 								? product_condition
-								: "uninformed",
+								: null,
 						sale_status:
 							sale_status.length > 0 ? sale_status : "uninformed",
 						link: link,
