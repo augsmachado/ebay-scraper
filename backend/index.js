@@ -21,6 +21,13 @@ app.use("*", (req, res) => {
 	res.status(400).json({ error: "Not route found" });
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+	try {
+		console.log(`Server running on port ${PORT}`);
+	} catch (err) {
+		console.log(err);
+		process.exit();
+	}
+});
 
 export default app;
