@@ -356,7 +356,9 @@ export default class ProductsController {
 						delivery:
 							delivery_global.length > 0
 								? delivery_global
-								: delivery_local,
+								: delivery_local.length > 0
+								? delivery_local
+								: "uninformed",
 						return_period: return_period.substring(
 							0,
 							return_period.indexOf(" ")
