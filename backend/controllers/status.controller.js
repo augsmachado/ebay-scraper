@@ -11,7 +11,7 @@ export default class StatusController {
 			let response = {
 				msg: "Current API status",
 				name: process.env.API_NAME,
-				environment: process.env.API_ENVIROMENT,
+				environment: process.env.API_ENVIRONMENT,
 				version: process.env.API_VERSION,
 				uptime: new Date().getTime(),
 				hash: uuidv4(),
@@ -35,7 +35,7 @@ export default class StatusController {
 				let resp = {
 					msg: "Current Server status",
 					name: process.env.SERVER_NAME,
-					environment: process.env.SERVER_ENVIROMENT,
+					environment: process.env.SERVER_ENVIRONMENT,
 					version: process.env.SERVER_VERSION,
 					status: `${response.status}`,
 					status_text: `${response.statusText}`,

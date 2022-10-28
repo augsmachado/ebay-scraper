@@ -13,6 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Define node caching settings > default 15 seconds
+
 const cache = new NodeCache({ stdTTL: 15 });
 const verifyCache = (req, res, next) => {
 	try {
