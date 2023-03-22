@@ -417,4 +417,116 @@ export default class ProductsController {
 			});
 		}
 	}
+
+	static async getReviewsByProductId(req, res) {
+		const id = req.params.id;
+		const country = req.query.country || "https://www.ebay.com";
+
+		let domain = SERVER;
+		try {
+			for (let i = 0; i < subdomains.length; i++) {
+				if (subdomains[i].country === country.toLowerCase()) {
+					domain = subdomains[i].ebay_domain;
+				}
+			}
+		} catch (err) {
+			res.status(404).json({
+				error: "Domain not found",
+				details: `${err}`,
+			});
+		}
+
+		const headers = req.headers["x-api-key"];
+		const api_key = Buffer.from(headers, "base64").toString();
+
+		if (api_key === API_KEY) {
+			const link = `${domain}/itm/${id}`;
+			axios
+				.get(link)
+				.then((response) => {
+					const html = response.data;
+					const $ = cheerio.load(html);
+					const seller = $("div#LISTING_FRAME_MODULE");
+					const review = $("div.fdbk-detail-list");
+
+					let seller_infos = [];
+
+					seller.each((index, element) => {
+						const logotype = $(element)
+							.find(
+								"img.d-stores-info-categories__container__info__image--img"
+							)
+							.attr("src");
+
+						const seller_name = $(element)
+							.find(
+								"div.d-stores-info-categories__container__info__section__title"
+							)
+							.attr("title");
+
+						const positive_feedback = $(element)
+							.find(
+								"div.d-stores-info-categories__container__info__section__item > span.ux-textspans.ux-textspans--BOLD"
+							)
+							.text()
+							.trim();
+
+						const contact = $(element)
+							.find(
+								"a.d-stores-info-categories__container__action__contact.fake-btn.fake-btn--secondary"
+							)
+							.attr("href");
+
+						const number_feedbacks = $(element)
+							.find("h2.fdbk-detail-list__title > span.SECONDARY")
+							.text()
+							.trim();
+
+						const all_feedbacks = $(element)
+							.find(
+								"div.fdbk-detail-list__btn-container > a.fdbk-detail-list__btn-container__btn.black-btn.fake-btn.fake-btn--large.fake-btn--secondary"
+							)
+							.attr("href");
+
+						seller_infos.push({
+							seller: seller_name
+								.replace(/_/g, " ")
+								.replace(/-/g, " "),
+							logotype: logotype,
+							contact: contact,
+							positive_feedback: positive_feedback,
+							number_feedbacks: number_feedbacks,
+							all_fedbacks: all_feedbacks,
+						});
+					});
+
+					let reviews = [];
+					review.each((index, element) => {
+						const number_feedbacks = $(element)
+							.find(
+								"div.fdbk-container > div.fdbk-container__details > div.fdbk-container__details__info > div.fdbk-container__details__info__username > span.fb-clipped"
+							)
+							.text()
+							.trim();
+
+						reviews.push({
+							test: number_feedbacks,
+						});
+					});
+
+					res.json(reviews);
+				})
+				.catch((err) => {
+					res.json({
+						error: `Unable to get product by id ${id} on server`,
+						details: `${err}`,
+					});
+				});
+		} else {
+			res.status(412).json({
+				error: "[412] Precondition failed",
+				details: "Provide Ebay Scraper API_KEY",
+			});
+		}
+	}
 }
