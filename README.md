@@ -1,7 +1,6 @@
 # potential_enigma
 
 Ebay Data Scraper is the easiest way to get access to product, price, sales rank and reviews data from Ebay in JSON format.
-
 Read more in [Postman Documenter](https://documenter.getpostman.com/view/4547078/2s84LStAFX)
 
 # v1.4.0 (new release)
