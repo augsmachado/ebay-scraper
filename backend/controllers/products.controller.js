@@ -100,7 +100,7 @@ export default class ProductsController {
 		const api_key = Buffer.from(headers, "base64").toString();
 
 		if (api_key === API_KEY) {
-			const link = `${domain}/sch/i.html?_fromR40&_nkw=${product_name}&_sacat=0&_dcat=111422&_pgn=${page_number}&rt=nc`;
+			const link = `${domain}/sch/i.html?_fromR40&_nkw=${product_name}&_sacat=0&_pgn=${page_number}`;
 			if (product_name.length >= MINIMUM_OF_LETTERS) {
 				axios(link)
 					.then((response) => {
@@ -169,8 +169,8 @@ export default class ProductsController {
 								.text()
 								.trim();
 
-							const link = $(element)
-								.find("div.s-item__info.clearfix > a")
+							const url = $(element)
+								.find("a.s-item__link")
 								.attr("href");
 
 							const thumbnail = $(element)
@@ -182,7 +182,8 @@ export default class ProductsController {
 								.attr("href");
 
 							// TODO: simplify this extraction of the product_id of the product link
-							const sub = link.split("/");
+							// COMMON ERROR: Uncaught TypeError: Cannot read property 'split' of undefined
+							const sub = url.split("/");
 							const id = sub[sub.indexOf("itm") + 1].substring(
 								0,
 								sub[sub.indexOf("itm") + 1].indexOf("?")
@@ -207,7 +208,7 @@ export default class ProductsController {
 									sales_potential.length > 0
 										? sales_potential
 										: "uninformed",
-								link: link,
+								link: url,
 								reviews: reviews,
 								thumbnail: thumbnail,
 							});
@@ -287,22 +288,26 @@ export default class ProductsController {
 							.trim();
 
 						const quantity_available = $(element)
-							.find("span#qtySubTxt")
+							.find("div.d-quantity__availability")
 							.text()
 							.trim();
 
 						const price = $(element)
-							.find("span#prcIsum")
+							.find("div.x-price-primary")
 							.text()
 							.trim();
 
 						const discounted_price = $(element)
-							.find("span#mm-saleDscPrc")
+							.find(
+								"div.x-bin-price__content > div.x-additional-info "
+							)
 							.text()
 							.trim();
 
 						const logistics_cost = $(element)
-							.find("div#prcIsumConv")
+							.find(
+								"div.ux-labels-values.col-12.ux-labels-values--shipping"
+							)
 							.text()
 							.trim();
 
@@ -312,13 +317,15 @@ export default class ProductsController {
 							.trim();
 
 						const sold = $(element)
-							.find("div.w2b.w2bsls > div")
+							.find(
+								"div.d-quantity__availability > div > span.ux-textspans.ux-textspans--BOLD.ux-textspans--EMPHASIS"
+							)
 							.text()
 							.trim();
 
 						const delivery_global = $(element)
 							.find(
-								"span.ux-textspans.ux-textspans--BOLD.ux-textspans--NEGATIVE"
+								"div.ux-labels-values.col-12.ux-labels-values__column-last-row.ux-labels-values--deliverto"
 							)
 							.text()
 							.trim();
@@ -332,7 +339,9 @@ export default class ProductsController {
 							.trim();
 
 						const return_period = $(element)
-							.find("div.w2b-cnt.w2b-3.w2b-brdr > span")
+							.find(
+								"div.ux-labels-values.col-12.ux-labels-values__column-last-row.ux-labels-values--returns > div.ux-labels-values__values.col-9"
+							)
 							.text()
 							.trim();
 
@@ -378,6 +387,7 @@ export default class ProductsController {
 											/[\r\n\t]/gm,
 											""
 									  ),
+							discounted_price: discounted_price,
 							logistics_cost: logistics_cost,
 							last_24_hours: last_24_hours,
 							sold: sold.substring(0, sold.indexOf(" ")),
@@ -482,11 +492,16 @@ export default class ProductsController {
 							.text()
 							.trim();
 
-						const all_feedbacks = $(element)
+						const read_more = $(element)
 							.find(
 								"div.fdbk-detail-list__btn-container > a.fdbk-detail-list__btn-container__btn.black-btn.fake-btn.fake-btn--large.fake-btn--secondary"
 							)
 							.attr("href");
+
+						/*const rating = $(element)
+							.find("div.fdbk-seller-rating__details")
+							.text()
+							.trim();*/
 
 						seller_infos.push({
 							seller: seller_name
@@ -494,27 +509,25 @@ export default class ProductsController {
 								.replace(/-/g, " "),
 							logotype: logotype,
 							contact: contact,
-							positive_feedback: positive_feedback,
+							positive_feedback_and_sold_items: positive_feedback,
 							number_feedbacks: number_feedbacks,
-							all_fedbacks: all_feedbacks,
+							//rating: rating,
+							read_more: read_more,
 						});
 					});
-
+					/*
 					let reviews = [];
 					review.each((index, element) => {
-						const number_feedbacks = $(element)
-							.find(
-								"div.fdbk-container > div.fdbk-container__details > div.fdbk-container__details__info > div.fdbk-container__details__info__username > span.fb-clipped"
-							)
-							.text()
-							.trim();
+						const all_feedbacks = $(element).find(
+							"div.fdbk-container__details__comment"
+						);
 
 						reviews.push({
-							test: number_feedbacks,
+							test: all_feedbacks,
 						});
-					});
+					});*/
 
-					res.json(reviews);
+					res.json(seller_infos);
 				})
 				.catch((err) => {
 					res.json({

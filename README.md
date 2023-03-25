@@ -1,6 +1,6 @@
 # potential_enigma
 
-# v1.2.0 (new release)
+# v1.4.0 (new release)
 
 **_New Features_**
 
@@ -14,6 +14,7 @@ This feature is supported by the following endpoints:
 
 -   **GET**/products
 -   **GET**/products/:id
+-   **GET**/products/:id/reviews
 
 If you want to access a subdomain, provide the **country** parameter with one of the supported countries below.
 
@@ -36,66 +37,20 @@ If you want to access a subdomain, provide the **country** parameter with one of
 
 ### New endpoints
 
-**| deals |**
+**| products |**
 
--   _GET/deals/tech_
-    -   without params
-    -   response
-
-```
-[
-    {
-        "product_name": "2020 Apple iPad 8th Geração 32/128GB Wifi 10.2\" Modelo mais recente",
-        "price": "1 634,49",
-        "original_price": "uninformed",
-        "currency": "BRL",
-        "discount": 0,
-        "product_condition": "uninformed",
-        "sale_status": "Quase esgotado",
-        "link": "https://www.ebay.com/itm/383791923777?_trkparms=5373%3A5000014449%7C5374%3ATech%7C5079%3A5000014449",
-        "image": "https://i.ebayimg.com/images/g/5R0AAOSwMDZhTrQk/s-l225.jpg"
-    }
-]
-```
-
--   _GET/deals/fashion_
-    -   without params
-    -   response
+-   _GET/products/:id/reviews_
+    -   params
+        -   id: **mandatory**
 
 ```
-[
-    {
-        "product_name": "Nike Masculino com Capuz Manga Longa Atlético Velo Academia Athletic Moletom Com Capuz",
-        "price": "232,88",
-        "original_price": "739,23",
-        "currency": "BRL",
-        "discount": "-68.61%",
-        "product_condition": "uninformed",
-        "sale_status": "Quase esgotado",
-        "link": "https://www.ebay.com/itm/203993185057?_trkparms=5373%3A5000014492%7C5374%3AFashion%7C5079%3A5000014492",
-        "image": "https://i.ebayimg.com/images/g/RHMAAOSwIG9irCOw/s-l225.jpg"
-    }
-]
-```
-
--   _GET/deals/home_
-    -   without params
-    -   response
-
-```
-[
-    {
-        "product_name": "Garrafa Térmica Aço Inoxidável 16 Oz Rei isolada de aço inoxidável Caneca de viagem com Alça",
-        "price": "126,56R",
-        "original_price": "105,55",
-        "currency": "BRL",
-        "discount": "20.00%",
-        "product_condition": "uninformed",
-        "sale_status": "Quase esgotado",
-        "link": "https://www.ebay.com/itm/382324124062?_trkparms=5373%3A5000014556%7C5374%3AHome%7C5079%3A5000014557",
-        "image": "https://ir.ebaystatic.com/pictures/aw/pics/s_1x2.gif"
-    }
-]
+{
+    "seller": "LFDC Supplies",
+    "logotype": "https://i.ebayimg.com/images/g/KIUAAOSwF0pjJ5QN/s-l140.jpg",
+    "contact": "https://contact.ebay.ie/ws/eBayISAPI.dll?ShowSellerFAQ&iid=225456328898&requested=lfdcsupplies&redirect=0&frm=284&rt=nc&ssPageName=PageSellerM2MFAQ_VI&_trksid=p2047675.m145687.l149087",
+    "positive_feedback_and_sold_items": "100%4.3K",
+    "number_feedbacks": "(544)"
+}
 ```
 
 ### New payload response
@@ -182,6 +137,68 @@ If you want to access a subdomain, provide the **country** parameter with one of
     "feedback_profile": "https://www.ebay.com.au/usr/redpocketstore?_trksid=p2047675.m3561.l2559",
     "store": "https://www.ebay.com.au/str/redpocketstore?_trksid=p2047675.m145687.l149086"
 }
+```
+
+**| deals |**
+
+-   _GET/deals/tech_
+    -   without params
+    -   response
+
+```
+[
+    {
+        "product_name": "2020 Apple iPad 8th Geração 32/128GB Wifi 10.2\" Modelo mais recente",
+        "price": "1 634,49",
+        "original_price": "uninformed",
+        "currency": "BRL",
+        "discount": 0,
+        "product_condition": "uninformed",
+        "sale_status": "Quase esgotado",
+        "link": "https://www.ebay.com/itm/383791923777?_trkparms=5373%3A5000014449%7C5374%3ATech%7C5079%3A5000014449",
+        "image": "https://i.ebayimg.com/images/g/5R0AAOSwMDZhTrQk/s-l225.jpg"
+    }
+]
+```
+
+-   _GET/deals/fashion_
+    -   without params
+    -   response
+
+```
+[
+    {
+        "product_name": "Nike Masculino com Capuz Manga Longa Atlético Velo Academia Athletic Moletom Com Capuz",
+        "price": "232,88",
+        "original_price": "739,23",
+        "currency": "BRL",
+        "discount": "-68.61%",
+        "product_condition": "uninformed",
+        "sale_status": "Quase esgotado",
+        "link": "https://www.ebay.com/itm/203993185057?_trkparms=5373%3A5000014492%7C5374%3AFashion%7C5079%3A5000014492",
+        "image": "https://i.ebayimg.com/images/g/RHMAAOSwIG9irCOw/s-l225.jpg"
+    }
+]
+```
+
+-   _GET/deals/home_
+    -   without params
+    -   response
+
+```
+[
+    {
+        "product_name": "Garrafa Térmica Aço Inoxidável 16 Oz Rei isolada de aço inoxidável Caneca de viagem com Alça",
+        "price": "126,56R",
+        "original_price": "105,55",
+        "currency": "BRL",
+        "discount": "20.00%",
+        "product_condition": "uninformed",
+        "sale_status": "Quase esgotado",
+        "link": "https://www.ebay.com/itm/382324124062?_trkparms=5373%3A5000014556%7C5374%3AHome%7C5079%3A5000014557",
+        "image": "https://ir.ebaystatic.com/pictures/aw/pics/s_1x2.gif"
+    }
+]
 ```
 
 ### Endpoints without changes
