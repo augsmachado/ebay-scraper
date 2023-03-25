@@ -1,5 +1,9 @@
 # potential_enigma
 
+Ebay Data Scraper is the easiest way to get access to product, price, sales rank and reviews data from Ebay in JSON format.
+
+Read more in [Postman Documenter](https://documenter.getpostman.com/view/4547078/2s84LStAFX)
+
 # v1.4.0 (new release)
 
 **_New Features_**
@@ -8,6 +12,8 @@
 -   new endpoints to get tech, home and fashion deals
 -   new payload response: /products and /status
 -   if payload's value is not informed by seller, then it will be filled like "uninformed"
+-   new endpoint to get product reviews
+-   this new version fix bugs like filling in empty fields, allowing searches with multiple terms, bringing more details about the product and the seller
 
 **_Support for eBay subdomains_**
 This feature is supported by the following endpoints:
