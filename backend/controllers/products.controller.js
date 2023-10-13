@@ -111,7 +111,7 @@ export default class ProductsController {
 						let ebay_products = [];
 
 						products.each((index, element) => {
-							const product_name = $(element)
+							const products_name = $(element)
 								.find("div.s-item__title")
 								.text()
 								.trim();
@@ -191,7 +191,10 @@ export default class ProductsController {
 
 							ebay_products.push({
 								product_id: id,
-								name: product_name,
+								name:
+									products_name.length > 0
+										? products_name
+										: product_name,
 								condition: condition,
 								price: price,
 								discount:
@@ -201,7 +204,9 @@ export default class ProductsController {
 								product_location:
 									location_global.length > 0
 										? location_global
-										: location_local,
+										: location_local.length > 0
+										? location_local
+										: "uninformed",
 								logistics_cost: logistics_cost,
 								description: description,
 								sales_potential:
@@ -215,7 +220,7 @@ export default class ProductsController {
 						});
 
 						// Remove products without essential attributes
-						for (var i = 0; i < ebay_products.length; i++) {
+						/*for (var i = 0; i < ebay_products.length; i++) {
 							if (
 								ebay_products[i].name.length <= 0 ||
 								ebay_products[i].product_location.length <= 0
@@ -223,7 +228,7 @@ export default class ProductsController {
 								ebay_products.splice(i, 1);
 								i--;
 							}
-						}
+						}*/
 
 						res.json(ebay_products);
 					})
