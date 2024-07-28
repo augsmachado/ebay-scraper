@@ -482,16 +482,20 @@ export default class ProductsController {
 
 						const seller_name = $(element)
 							.find(
-								"div.d-stores-info-categories__container__info__section__title"
+								"div.d-stores-info-categories__container__info__section > h2"
 							)
 							.attr("title");
 
-						const positive_feedback = $(element)
+						const positive_feedback_and_sold_items = $(element)
 							.find(
 								"div.d-stores-info-categories__container__info__section__item > span.ux-textspans.ux-textspans--BOLD"
 							)
 							.text()
-							.trim();
+							.trim()
+							.split("%");
+						const positive_feedback =
+							positive_feedback_and_sold_items[0] + "%";
+						const sold_items = positive_feedback_and_sold_items[1];
 
 						const contact = $(element)
 							.find(
@@ -510,10 +514,12 @@ export default class ProductsController {
 							)
 							.attr("href");
 
-						/*const rating = $(element)
+						/*
+							const rating = $(element)
 							.find("div.fdbk-seller-rating__details")
 							.text()
-							.trim();*/
+							.trim();
+						*/
 
 						seller_infos.push({
 							seller: seller_name
@@ -521,12 +527,16 @@ export default class ProductsController {
 								.replace(/-/g, " "),
 							logotype: logotype,
 							contact: contact,
-							positive_feedback_and_sold_items: positive_feedback,
-							number_feedbacks: number_feedbacks,
+							positive_feedback: positive_feedback,
+							sold_items: sold_items,
+							number_feedbacks: number_feedbacks
+								.replace("(", "")
+								.replace(")", ""),
 							//rating: rating,
 							read_more: read_more,
 						});
 					});
+
 					/*
 					let reviews = [];
 					review.each((index, element) => {
@@ -537,7 +547,10 @@ export default class ProductsController {
 						reviews.push({
 							test: all_feedbacks,
 						});
-					});*/
+					});
+
+					seller_infos["reviews"] = reviews;
+					*/
 
 					res.json(seller_infos);
 				})
