@@ -280,7 +280,7 @@ export default class ProductsController {
 				.then((response) => {
 					const html = response.data;
 					const $ = cheerio.load(html);
-					const product = $("div#Body");
+					const product = $("div.main-container");
 
 					let product_info = [];
 
@@ -371,6 +371,12 @@ export default class ProductsController {
 							)
 							.attr("href");
 
+						const upc = $(
+							"div#viTabs_0_is > div.ux-layout-section-module-evo > div.ux-layout-section-evo.ux-layout-section--features > div.ux-layout-section-evo__item.ux-layout-section-evo__item--table-view > div.ux-layout-section-evo__row > div.ux-layout-section-evo__col > dl.ux-labels-values.ux-labels-values--inline.col-6.ux-labels-values__column-last-row.ux-labels-values--upc > dd.ux-labels-values__values > div.ux-labels-values__values-content"
+						)
+							.text()
+							.trim();
+
 						const shipping = $(element)
 							.find(
 								"div.ux-labels-values__values-content > div > span.ux-textspans.ux-textspans--SECONDARY"
@@ -410,6 +416,7 @@ export default class ProductsController {
 								.replace(/_/g, " ")
 								.replace(/-/g, " "),
 
+							upc: upc,
 							shipping: shipping,
 							seller: seller,
 							feedback_profile: feedback_profile,

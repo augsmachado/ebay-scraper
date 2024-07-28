@@ -12,7 +12,7 @@
   "author": "Augusto Machado",
   "license": "CC0 1.0 Universal",
   "dependencies": {
-    "axios": "^0.27.2",
+    "axios": "^1.7.2",
     "cheerio": "^1.0.0-rc.10",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",

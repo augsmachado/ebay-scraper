@@ -9,7 +9,7 @@ export default class StatusController {
 	static async getStatusApi(req, res) {
 		try {
 			let response = {
-				msg: "Current API status",
+				msg: "API status 🚀",
 				name: process.env.API_NAME,
 				environment: process.env.API_ENVIRONMENT,
 				version: process.env.API_VERSION,
@@ -33,7 +33,7 @@ export default class StatusController {
 			.get(`${domain}`)
 			.then(function (response) {
 				let resp = {
-					msg: "Current Server status",
+					msg: "Server status 🚀",
 					name: process.env.SERVER_NAME,
 					environment: process.env.SERVER_ENVIRONMENT,
 					version: process.env.SERVER_VERSION,
