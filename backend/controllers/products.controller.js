@@ -193,22 +193,22 @@ export default class ProductsController {
 								product_id: id,
 								name:
 									products_name.length > 0
-										? products_name
-										: product_name,
-								condition: condition,
-								price: price,
+										? products_name.toUpperCase()
+										: product_name.toUpperCase(),
+								condition: condition.toUpperCase(),
+								price: price.toUpperCase(),
 								discount:
 									discount.length > 0
-										? discount
+										? discount.toUpperCase()
 										: "uninformed",
 								product_location:
 									location_global.length > 0
-										? location_global
+										? location_global.toUpperCase()
 										: location_local.length > 0
-										? location_local
+										? location_local.toUpperCase()
 										: "uninformed",
-								logistics_cost: logistics_cost,
-								description: description,
+								logistics_cost: logistics_cost.toUpperCase(),
+								description: description.toUpperCase(),
 								sales_potential:
 									sales_potential.length > 0
 										? sales_potential
@@ -229,6 +229,9 @@ export default class ProductsController {
 								i--;
 							}
 						}*/
+
+						ebay_products.shift();
+						ebay_products.shift();
 
 						res.json(ebay_products);
 					})
@@ -524,7 +527,8 @@ export default class ProductsController {
 						seller_infos.push({
 							seller: seller_name
 								.replace(/_/g, " ")
-								.replace(/-/g, " "),
+								.replace(/-/g, " ")
+								.toUpperCase(),
 							logotype: logotype,
 							contact: contact,
 							positive_feedback: positive_feedback,

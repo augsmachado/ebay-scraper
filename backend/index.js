@@ -6,6 +6,7 @@ import NodeCache from "node-cache";
 import status from "./routes/status.routes.js";
 import products from "./routes/products.routes.js";
 import deals from "./routes/deals.routes.js";
+import seller from "./routes/seller.routes.js";
 
 // Define .env config
 dotenv.config();
@@ -33,6 +34,7 @@ app.use("/", status);
 app.use("/status", status);
 app.use("/products", verifyCache, products);
 app.use("/deals", verifyCache, deals);
+app.use("/seller", verifyCache, seller);
 
 app.use("*", (req, res) => {
 	res.status(400).json({ error: "Not route found" });
