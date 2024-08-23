@@ -373,9 +373,10 @@ export default class ProductsController {
 							.text()
 							.split(/(available)+/g);
 
-						const quantity_available = qtd[0]
-							.trim()
-							.concat(" available");
+						const quantity_available =
+							qtd[0].trim().length > 0
+								? qtd[0].trim().concat(" available")
+								: "undefined";
 
 						const price = $(element)
 							.find("div.x-price-primary")
