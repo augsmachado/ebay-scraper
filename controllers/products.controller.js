@@ -366,7 +366,9 @@ export default class ProductsController {
 							.trim();
 
 						const quantity_available = $(element)
-							.find("div.d-quantity__availability")
+							.find(
+								"div.x-quantity__availability.evo > span.ux-textspans.ux-textspans--SECONDARY"
+							)
 							.text()
 							.trim();
 
@@ -396,7 +398,7 @@ export default class ProductsController {
 
 						const sold = $(element)
 							.find(
-								"div.d-quantity__availability > div > span.ux-textspans.ux-textspans--BOLD.ux-textspans--EMPHASIS"
+								"div.x-quantity__availability.evo > span.ux-textspans.ux-textspans--BOLD.ux-textspans--EMPHASIS"
 							)
 							.text()
 							.trim();
@@ -463,7 +465,10 @@ export default class ProductsController {
 								.replace(/_/g, " ")
 								.replace(/-/g, " "),
 							link: link,
-							quantity_available: quantity_available,
+							quantity_available: quantity_available.substring(
+								0,
+								quantity_available.indexOf(" ")
+							),
 							price:
 								price.length > 0
 									? price.replace(/[\r\n\t]/gm, "")
