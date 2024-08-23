@@ -311,6 +311,7 @@ export default class ProductsController {
 							.split("%");
 						const positive_feedback =
 							positive_feedback_and_sold_items[0] + "%";
+
 						const sold_items = positive_feedback_and_sold_items[1];
 
 						const contact = $(element)
@@ -365,12 +366,16 @@ export default class ProductsController {
 							.text()
 							.trim();
 
-						const quantity_available = $(element)
+						const qtd = $(element)
 							.find(
 								"div.x-quantity__availability.evo > span.ux-textspans.ux-textspans--SECONDARY"
 							)
 							.text()
-							.trim();
+							.split(/(available)+/g);
+
+						const quantity_available = qtd[0]
+							.trim()
+							.concat(" available");
 
 						const price = $(element)
 							.find("div.x-price-primary")
@@ -393,13 +398,6 @@ export default class ProductsController {
 
 						const last_24_hours = $(element)
 							.find("div.vi-notify-new-bg-dBtm > span")
-							.text()
-							.trim();
-
-						const sold = $(element)
-							.find(
-								"div.x-quantity__availability.evo > span.ux-textspans.ux-textspans--BOLD.ux-textspans--EMPHASIS"
-							)
 							.text()
 							.trim();
 
@@ -465,10 +463,7 @@ export default class ProductsController {
 								.replace(/_/g, " ")
 								.replace(/-/g, " "),
 							link: link,
-							quantity_available: quantity_available.substring(
-								0,
-								quantity_available.indexOf(" ")
-							),
+							quantity_available: quantity_available,
 							price:
 								price.length > 0
 									? price.replace(/[\r\n\t]/gm, "")
@@ -479,7 +474,6 @@ export default class ProductsController {
 							discounted_price: discounted_price,
 							logistics_cost: logistics_cost,
 							last_24_hours: last_24_hours,
-							sold: sold.substring(0, sold.indexOf(" ")),
 							delivery:
 								delivery_global.length > 0
 									? delivery_global
