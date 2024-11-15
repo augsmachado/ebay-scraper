@@ -103,6 +103,7 @@ export default class ProductsController {
 		if (api_key === API_KEY) {
 			let link = `${domain}/sch/i.html?_fromR40&_nkw=${product_name}&_sacat=0&_pgn=${page_number}`;
 
+			// Add filter buy now
 			if (buy_now == true) {
 				link.concat("&rt=nc&LH_BIN=1");
 			}
