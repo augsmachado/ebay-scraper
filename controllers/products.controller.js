@@ -372,10 +372,7 @@ export default class ProductsController {
 								const url = $(imgElement).attr("src");
 
 								if (url) {
-									product_images.push({
-										index: product_images.length + 1, // Usando o comprimento atual para o índice
-										url: url,
-									});
+									product_images.push(url);
 								}
 							});
 					});
