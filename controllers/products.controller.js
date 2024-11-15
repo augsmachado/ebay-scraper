@@ -292,39 +292,40 @@ export default class ProductsController {
 					const $ = cheerio.load(html);
 
 					const product = $("div.main-container");
-					const seller = $("div#LISTING_FRAME_MODULE");
+					const seller = $("div#STORE_INFORMATION");
 					const images = $("div.ux-image-grid.no-scrollbar");
 
 					// Get seller and product reviews
 					let seller_infos = [];
 					seller.each((index, element) => {
 						const logotype = $(element)
-							.find(
-								"img.d-stores-info-categories__container__info__image--img"
-							)
+							.find("img.x-store-information__logo")
 							.attr("src");
 
 						const seller_name = $(element)
 							.find(
-								"div.d-stores-info-categories__container__info__section > h2"
+								"div.x-store-information__store-name-wrapper > h2"
 							)
 							.attr("title");
 
-						const positive_feedback_and_sold_items = $(element)
+						const positive_feedback = $(element)
 							.find(
-								"div.d-stores-info-categories__container__info__section__item > span.ux-textspans.ux-textspans--BOLD"
+								"div.x-store-information__store-name-wrapper > h4.x-store-information__highlights > span.ux-textspans"
 							)
 							.text()
 							.trim()
 							.split("%");
-						const positive_feedback =
-							positive_feedback_and_sold_items[0] + "%";
 
-						const sold_items = positive_feedback_and_sold_items[1];
+						const sold_items = $(element)
+							.find(
+								"div.x-store-information__store-name-wrapper > h4.x-store-information__highlights > span.ux-textspans.ux-textspans--SECONDARY"
+							)
+							.text()
+							.trim();
 
 						const contact = $(element)
 							.find(
-								"a.d-stores-info-categories__container__action__contact.fake-btn.fake-btn--secondary"
+								"div.x-store-information__cta-container > a.ux-call-to-action.fake-btn.fake-btn--secondary"
 							)
 							.attr("href");
 
@@ -333,10 +334,8 @@ export default class ProductsController {
 							.text()
 							.trim();
 
-						const read_more = $(element)
-							.find(
-								"div.fdbk-detail-list__btn-container > a.fdbk-detail-list__btn-container__btn.black-btn.fake-btn.fake-btn--large.fake-btn--secondary"
-							)
+						const store_link = $(element)
+							.find("div.x-store-information__header > a")
 							.attr("href");
 
 						/*
@@ -353,13 +352,13 @@ export default class ProductsController {
 								.toUpperCase(),
 							logotype: logotype,
 							contact: contact,
-							positive_feedback: positive_feedback,
+							positive_feedback: positive_feedback[0] + "%",
 							sold_items: sold_items,
 							number_feedbacks: number_feedbacks
 								.replace("(", "")
 								.replace(")", ""),
 							//rating: rating,
-							read_more: read_more,
+							store_link: store_link,
 						});
 					});
 
@@ -451,22 +450,6 @@ export default class ProductsController {
 							.text()
 							.trim();
 
-						const seller = $(element)
-							.find(
-								"div.d-stores-info-categories__container__info__section__title"
-							)
-							.attr("title");
-
-						const feedback_profile = $(element)
-							.find("div.ux-seller-section__item--seller > a")
-							.attr("href");
-
-						const store = $(element)
-							.find(
-								"div.d-stores-info-categories__container__action > a"
-							)
-							.attr("href");
-
 						const upc = $(
 							"div#viTabs_0_is > div.ux-layout-section-module-evo > div.ux-layout-section-evo.ux-layout-section--features > div.ux-layout-section-evo__item.ux-layout-section-evo__item--table-view > div.ux-layout-section-evo__row > div.ux-layout-section-evo__col > dl.ux-labels-values.ux-labels-values--inline.col-6.ux-labels-values__column-last-row.ux-labels-values--upc > dd.ux-labels-values__values > div.ux-labels-values__values-content"
 						)
@@ -513,11 +496,8 @@ export default class ProductsController {
 
 							upc: upc,
 							shipping: shipping,
-							seller: seller,
-							feedback_profile: feedback_profile,
-							store: store,
 							product_images: product_images,
-							reviews: seller_infos[0],
+							seller_infos: seller_infos,
 						});
 					});
 
