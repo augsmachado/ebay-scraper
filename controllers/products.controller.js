@@ -81,6 +81,7 @@ export default class ProductsController {
 		const page_number = 1 || req.query.page;
 		const product_name = req.query.product_name;
 		const country = req.query.country || "https://www.ebay.com";
+		const buy_now = false || req.query.buy_now;
 
 		let domain = SERVER;
 		try {
@@ -100,7 +101,12 @@ export default class ProductsController {
 		const api_key = Buffer.from(headers, "base64").toString();
 
 		if (api_key === API_KEY) {
-			const link = `${domain}/sch/i.html?_fromR40&_nkw=${product_name}&_sacat=0&_pgn=${page_number}`;
+			let link = `${domain}/sch/i.html?_fromR40&_nkw=${product_name}&_sacat=0&_pgn=${page_number}`;
+
+			if (buy_now == true) {
+				link.concat("&rt=nc&LH_BIN=1");
+			}
+
 			if (product_name.length >= MINIMUM_OF_LETTERS) {
 				axios(link)
 					.then((response) => {
