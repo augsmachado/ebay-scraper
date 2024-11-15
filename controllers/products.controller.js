@@ -286,6 +286,7 @@ export default class ProductsController {
 
 					const product = $("div.main-container");
 					const seller = $("div#LISTING_FRAME_MODULE");
+					const images = $("div.ux-image-grid.no-scrollbar");
 
 					// Get seller and product reviews
 					let seller_infos = [];
@@ -353,6 +354,23 @@ export default class ProductsController {
 							//rating: rating,
 							read_more: read_more,
 						});
+					});
+
+					// Get product product_images
+					let product_images = [];
+					images.each((index, element) => {
+						$(element)
+							.find("button > img")
+							.each((imgIndex, imgElement) => {
+								const url = $(imgElement).attr("src");
+
+								if (url) {
+									product_images.push({
+										index: product_images.length + 1, // Usando o comprimento atual para o índice
+										url: url,
+									});
+								}
+							});
 					});
 
 					// Get product informations
@@ -494,13 +512,22 @@ export default class ProductsController {
 							seller: seller,
 							feedback_profile: feedback_profile,
 							store: store,
+							product_images: product_images,
 							reviews: seller_infos[0],
 						});
 					});
 
 					//product_info["reviews"] = seller_infos;
 
-					res.json(product_info);
+					if (product_info.length == 0) {
+						res.status(404).json({
+							error: "[404] Not found",
+							details: `The product is not available in this domain: ${domain}`,
+						});
+						return;
+					} else {
+						res.json(product_info);
+					}
 				})
 				.catch((err) => {
 					res.json({
