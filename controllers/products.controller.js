@@ -269,7 +269,10 @@ export default class ProductsController {
 	}
 
 	static async getProductById(req, res) {
+		// Validate and sanitize the id parameter
 		const id = req.params.id;
+		const sanitizedId = id.replace(/[^a-zA-Z0-9]/g, '');
+		
 		const country = req.query.country || "https://www.ebay.com";
 
 		let domain = SERVER;
@@ -290,7 +293,7 @@ export default class ProductsController {
 		const api_key = Buffer.from(headers, "base64").toString();
 
 		if (api_key === API_KEY) {
-			const link = `${domain}/itm/${id}`;
+			const link = `${domain}/itm/${sanitizedId}`;
 			axios
 				.get(link)
 				.then((response) => {
