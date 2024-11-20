@@ -79,9 +79,15 @@ const subdomains = [
 export default class ProductsController {
 	static async getProducts(req, res) {
 		const page_number = 1 || req.query.page;
-		const product_name = req.query.product_name;
 		const country = req.query.country || "https://www.ebay.com";
 		const buy_now = false || req.query.buy_now;
+
+		let product_name = req.query.product_name;
+		if (typeof product_name !== 'string') {
+			return res.status(400).json({
+				error: "Invalid product name",
+				details: "Product name must be a string",
+			});
 
 		let domain = SERVER;
 		try {
@@ -108,7 +114,7 @@ export default class ProductsController {
 				link.concat("&rt=nc&LH_BIN=1");
 			}
 
-			if (product_name.length >= MINIMUM_OF_LETTERS) {
+			if (typeof product_name === 'string' && product_name.length >= MINIMUM_OF_LETTERS) {
 				axios(link)
 					.then((response) => {
 						const html = response.data;
