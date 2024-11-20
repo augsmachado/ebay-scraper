@@ -1,4 +1,7 @@
 # These are supported funding model platforms
 
-github: # [augsmachado]
-custom: # ['https://www.paypal.com/donate?business=BUVBYP8ZW5VC2&no_recurring=0&item_name=By+donating%2C+I+offer+you+even+better+software&currency_code=USD']
+github: [augsmachado]
+custom:
+    [
+        "http://t.ly/UJXWZ",
+    ]
